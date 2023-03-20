@@ -4,18 +4,17 @@ const { findBy } = require('../users/users-model');
 
 const restricted = (req, res, next) => {
   const token = req.headers.authorization;
-  if (token) {
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-      if (err) {
-        next({ status: 401, message: 'Token invalid' });
-      } else {
-        req.decodedjwt = decoded;
-        next();
-      }
-    })
-  } else {
-    next({ status: 401, message: 'Token required' });
-  }
+  if (!token) {
+    return next({ status: 401, message: 'Token required' });
+  } 
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      next({ status: 401, message: 'Token invalid' });
+    } else {
+      req.decoded = decoded;
+      next();
+    }
+  })
   /*
     If the user does not provide a token in the Authorization header:
     status 401
