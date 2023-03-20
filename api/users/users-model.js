@@ -3,7 +3,7 @@ const db = require('../../data/db-config.js');
 function find() {
   return db('users as u')
     .join('roles as r', 'u.role_id', 'r.role_id')
-    .select('user_id', 'u.username', 'role_name')
+    .select('user_id', 'username', 'role_name')
   /**
     You will need to join two tables.
     Resolves to an ARRAY with all users.
@@ -47,7 +47,7 @@ function findById(user_id) {
   return db('users as u')
     .join('roles as r', 'u.role_id', 'r.role_id')
     .select('user_id', 'username', 'role_name')
-    .where('user_id', user_id)
+    .where('u.user_id', user_id)
     .first()
   /**
     You will need to join two tables.
